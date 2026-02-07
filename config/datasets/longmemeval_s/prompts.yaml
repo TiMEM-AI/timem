@@ -1,0 +1,412 @@
+# ============================================================================
+# Locomo Dataset Configuration
+# ============================================================================
+# This configuration file is optimized for the Locomo experimental dataset with prompts customized
+# to match the specific characteristics of this dataset.
+# 
+# Dataset Characteristics:
+# - Long-term conversational memory experimental data
+# - Mixed Chinese and English conversations
+# - Multi-round complex dialogue scenarios
+# ============================================================================
+
+# L1 Fragment-Level Memory Prompts
+l1_fragment_summary:
+  en: |
+    You are a dialogue memory generator. Your task is to write a fragment memory that captures only the NEW facts from the "Current Conversation" (do not repeat anything already covered in "Historical Memories").
+    
+    Core principle:
+    Convert dialogue from first-person to third-person narration, preserving as much substantive information content from the original as possible, excluding only confirmed non-informative words.
+    
+    What to preserve:
+    - All substantive information: people, events, times, places, causes, results, numbers, specific descriptions
+    - Original wording: Keep specific terms used in dialogue for titles, item names, activity descriptions, etc, numbers use Arabic numerals
+    - Emotional expressions: Retain explicit emotions and attitudes from original (like "happy", "worried", "likes"), but avoid adding subjective inferences not present in original
+    
+    What to exclude:
+    Only exclude purely functional words: greetings ("hi""bye"), confirmation words ("uh-huh""okay""yes"), meaningless fillers ("um""you know""like")
+    
+    Time normalization:
+    - Preserve the original relative time expressions exactly as written (e.g., "last night", "this morning", "last Friday"). DO NOT convert relative time to absolute dates.
+    
+    Style:
+    - Use English third-person narration.
+    - Write plain sentences (no lists/numbering/Markdown). Aim for 2-4 sentences, but allow longer to retain essential details.
+    - Use exact proper nouns as in the dialogue; do not replace/expand/infer names, organizations, or locations.
+    - Each memory should focus on one core fact or closely related fact group; avoid packing too many unrelated details into a single entry.
+    
+    Inputs:
+    - Historical memories (do not repeat): {previous_summary}
+    - Current conversation: {new_dialogue}
+    
+    Please generate a fragment memory that contains ONLY the new facts. If the current conversation has no substantial new content, provide a minimal 1-2 sentence summary of the core topic or attitude expressed in this turn (do NOT output "no significant additions" or similar empty statements).
+
+# L2 Session-Level Memory Prompts
+l2_session_summary:
+  en: |
+    You are a session-level memory generator. Your task is to integrate the fragment memories from this session into a factual session-level summary for downstream daily/weekly aggregation. Aim to maximize fact density without losing essentials and minimize redundancy.
+    
+    Core principle:
+    Integrate into a coherent session summary while preserving all substantive information from fragments. Prioritize detail retention, moderate deduplication to enhance density.
+    
+    Content requirements:
+    - Present in chronological order: who-did-what-when-where-why/so-what, plus key decisions and state changes
+    - Strictly base on fragment memories; DO NOT invent facts or "reasonable expansions" beyond fragments
+    - Preserve specific information from fragments: numbers, quantifiers, modifiers, relationship terms, parallel specific items, descriptors, using original wording from fragments
+    - Deduplication: Remove greetings and repeated confirmations, merge near-duplicates, keep most complete version when multiple fragments mention same fact
+    
+    Time handling:
+    - Strictly preserve relative time expressions from fragment memories (e.g., "last night", "this morning", "last week"). DO NOT convert them to absolute dates.
+    - ONLY preserve both relative and absolute time when fragment memories already contain both; NEVER infer/calculate absolute dates from timestamps.
+    
+    Style and length:
+    - Use English third-person narration. Use natural, coherent narrative sentences; do not use lists, numbering, or any format markers.
+    - Target about 200-300 words; allow modest overflow to preserve essentials, but avoid verbosity and vacuity.
+    - Keep proper nouns exactly as in the dialogue; do not invent/expand names, organizations, or locations.
+    
+    Input:
+    - Session fragment memories: {fragment_summaries}
+    
+    Please generate session-level summary.
+
+# L3 Daily-Level Memory Prompts
+l3_daily_summary:
+  en: |
+    You are the agent's long-term memory builder. Task: Generate precise event records for today to serve as foundation for memory retrieval and character understanding.
+    
+    Core Positioning:
+    L3 memory is the factual layer, accurately recording "who did what and said what when" to provide reliable basis for higher-level pattern recognition and profiling.
+    
+    Recording Principles:
+    - Precision: Preserve specific names of times, people, places, and items
+    - Completeness: Record cause-effect of events and decision rationale
+    - Authenticity: Prioritize direct quotes
+    - Uniqueness: Record details that reveal individual characteristics
+    
+    Must Include:
+    - Time (specific or relative)
+    - People (use names from dialogue)
+    - Action (specific verb + specific object)
+    - Quotes (at least one per event: "XXX said '...'")
+    - Details (numbers, locations, item names)
+    - Decisions (if any, record options and rationale)
+
+    Evidence-first and Less-is-more:
+    - State only well-supported facts; if evidence is weak, omit or keep to one factual sentence
+    - Do not hypothesize or expand beyond provided content
+    - If no direct quote and facts are incomplete, prefer not to write the event
+    
+    Time Expression: Preserve relative time from dialogue ("yesterday", "last Friday"), do not convert to absolute dates.
+    
+    Output Standards:
+    - English third-person, 200-400 words
+    - Chronological order, natural paragraphs
+    - 1-2 sentences per event
+    
+    Input:
+    - Historical daily reports: {previous_daily_memories}
+    - Current date: {date}
+    - Today's sessions: {session_summaries}
+    
+    Generate today's event records directly:
+
+# L4 Weekly-Level Memory Prompts
+l4_weekly_summary:
+  en: |
+    You are the agent's behavioral pattern analyst. Task: Identify individual behavioral patterns and changes from this week's daily reports to help the agent understand character uniqueness.
+    
+    Core Positioning:
+    L4 memory is the pattern layer, extracting unique practices and preferences through identifying recurring behaviors and trend changes, serving the agent's deep understanding of characters.
+    
+    Analysis Principles:
+    - Recurring behavior identification: Find similar choices or practices appearing multiple times this week
+    - Uniqueness excavation: Explain how this person differs from typical people
+    - Change tracking: Mark first-time behaviors or frequency changes
+    - Data support: Support analysis with specific counts, times, and cases
+    - Less-is-more: If evidence is insufficient, skip extracting the pattern; do not speculate
+    
+    Content Structure:
+    
+    1. This Week's Event Overview (timeline, preserve dates and key information)
+    
+    2. Behavioral Pattern Recognition (focus)
+    If recurring behaviors found, record:
+    - Pattern description: Use behaviors not adjectives
+    - Specific cases: List each occurrence this week (time + specific action)
+    - Unique aspects: How this person's approach differs from typical people
+    - Frequency comparison: X times this week vs Y times last week (if data available)
+    - Evidence threshold: If you cannot provide at least 2 cases or explicit frequency this week, skip the pattern
+    
+    3. Preferences and Tendencies
+    Identified from repeated choices:
+    - Preference content: What repeatedly chosen among options
+    - Choice rationale: Reasons extracted from dialogue
+    - Evidence threshold: If rationale relies on guesswork or lacks quotes, omit the item
+    
+    4. This Week's Changes
+    - First-time behaviors or topics
+    - Significant frequency increases/decreases
+    - Shifts in approach or attitude
+    - Specific description: From what to what, when started
+    - Evidence threshold: If no clear contrast or time point, do not conclude
+    
+    Wording Standards:
+    Use behavioral descriptions instead of abstract adjectives. For example:
+    - "consults 2-3 people before each decision" not "is cautious"
+    - "mentioned family 4 times this week" not "values family"
+    - "chose A over B because..." not "prefers A"
+    
+    Evidence-first and Less-is-more:
+    - Extract patterns only with clear evidence (time/counts/quotes/details). Otherwise, skip.
+    - Do not hypothesize; do not fill gaps for completeness.
+    - If evidence for contrast is weak, state objective frequency only without conclusion.
+    
+    Output Standards:
+    - English third-person, 300-500 words
+    - Structured paragraphs, focus on pattern recognition
+    - Each pattern includes: description + cases + uniqueness + frequency
+    
+    Input:
+    - Historical weekly reports: {previous_weekly_memories}
+    - Current week: Year {year}, Week {week_number} ({week_start} to {week_end})
+    - This week's daily reports: {daily_summaries}
+    
+    Generate weekly report directly:
+
+# L5 High-Level Memory Prompts
+l5_high_level_summary:
+  en: |
+    You are the agent's deep character profiler. Task: Build separate in-depth personalized archives for two participants, enabling the agent to clearly understand and distinguish their uniqueness.
+    
+    Core Objectives:
+    Build deep personalized profiles, excavating each person's unique personality traits, behavioral patterns, and value orientations, enabling the agent to:
+    - Understand each person's uniqueness
+    - Distinguish differences between the two
+    - Predict likely behavioral choices
+    - Understand motivations behind decisions
+    
+    Analysis Positioning:
+    L5 memory is the profiling layer, distilling individual core traits and uniqueness from long-term observations. Each person's archive should embody their irreplaceable personalized characteristics.
+    
+    Archive Structure (generate separately for each person):
+    
+    1. Basic Identity
+    Only list information explicitly mentioned in dialogue:
+    - Role positioning (gender identity / occupation / student, etc.)
+    - Life background (family status / geographic location, etc.)
+    - Main social contacts (who interacted with this month, frequency)
+    
+    2. Key Events This Month
+    Select 3-5 events that best reveal this person's traits:
+    - Time + action + details + result
+    - Prioritize events involving choices, decisions, responses
+    
+    3. Core Trait Analysis (focus, determines profile quality)
+    
+    Identify 2-3 most unique traits for each person. Each trait must include:
+    
+    [Trait Name] Use behavioral description, not adjectives
+    
+    - Behavioral Evidence: At least 3 specific examples
+      Time 1: What done + what said
+      Time 2: What done + what said
+      Time 3: What done + what said
+    
+    - Uniqueness Explanation:
+      Typical people's approach: [conventional choice]
+      This person's approach: [unique choice]
+      Resulting difference: [specific outcome]
+    
+    - Supporting Quote: At least 1 direct quote
+    
+    - Possible Underlying Motivation: Values or beliefs inferred from observations
+    
+    4. Decision-Making Pattern
+    If decision scenarios exist, analyze:
+    - What prioritized in decisions
+    - Unique aspects of selection criteria
+    - Supporting case examples
+    
+    5. Changes This Month
+    - Newly emerged behaviors or topics
+    - Shifts in attitude or frequency
+    - Specific description: From what to what
+    
+    6. Comparative Distinction (Important!)
+    Clearly mark differences between the two:
+    - Characteristics both share
+    - Characteristics only this person has
+    - Characteristics contrasting with the other person
+    
+    Wording Standards:
+    Use specific behavioral descriptions instead of abstract evaluations:
+    - "consults 2-3 people before each decision, considers for 3 days" not "cautious"
+    - "proactively shared experiences 4 times this month" not "open"
+    - "chose A because it helps X people" not "has a sense of mission"
+    
+    Key Requirements:
+    - Each trait must have at least 3 examples
+    - Each trait must explain difference from typical people
+    - Two archives can clearly distinguish each other
+    - Support with data (counts, frequency, duration)
+    
+    Output Standards:
+    - English third-person, 400-600 words per person
+    - Clear paragraphs, separate two archives with blank line
+    - Focus on trait analysis and difference identification
+    
+    Input:
+    - Historical archives: {previous_monthly_memories}
+    - Current month: {month_name} {year} ({month_start} to {month_end})
+    - This month's weekly reports: {expert_memories}
+    
+    Generate deep profiles separately for both participants:
+
+
+# Simple Query Relevance Analysis (Aggressive Filtering)
+memory_refiner_simple:
+  en: |
+    Filter memories for simple fact query (Complexity 0).
+    
+    Strategy: Aggressive filtering - Keep only direct answers
+    Target: 3-8 memories
+    
+    ## Filtering Rules
+    1. KEEP if memory directly answers the question
+    2. KEEP if memory provides essential context (time/location of the fact)
+    3. EXCLUDE if related but does not contribute to answer
+    4. EXCLUDE if different topic entirely
+    
+    ## Instructions
+    - Be strict: Only keep memories that help answer the specific question
+    - Remove noise: Exclude tangentially related memories
+    - Aim for 3-8 memories total
+    
+    Question: {question}
+    Candidate memories ({total_count} total):
+    {numbered_memories}
+    
+    Return IDs to keep (JSON format):
+    {{"relevant_ids": [1, 2, 3, ...]}}
+
+# Hybrid Query Relevance Analysis (Moderate Filtering)
+memory_refiner_hybrid:
+  en: |
+    Filter memories for temporal/aggregation query (Complexity 1).
+    
+    Strategy: Moderate filtering - Preserve timeline and context
+    Target: 8-18 memories
+    
+    ## Filtering Rules
+    1. KEEP ALL memories with explicit dates/times (MANDATORY - these are critical for temporal reasoning)
+    2. KEEP ALL memories with numbers (needed for calculations/counting)
+    3. KEEP memories from different time points (ensure temporal diversity)
+    4. KEEP memories providing event sequences or context
+    5. EXCLUDE only if completely unrelated AND lacks temporal markers
+    
+    ## Special Instructions
+    - For temporal reasoning: Ensure at least 8 memories with time markers
+    - For aggregation: Ensure coverage across the target time period
+    - When uncertain about a memory with dates/numbers: KEEP it
+    - Aim for 8-18 memories total
+    
+    Question: {question}
+    Candidate memories ({total_count} total):
+    {numbered_memories}
+    
+    Return IDs to keep (JSON format):
+    {{"relevant_ids": [1, 2, 3, ...]}}
+
+# Complex Query Relevance Analysis (Conservative Filtering)
+memory_refiner_complex:
+  en: |
+    Filter memories for reasoning query (Complexity 2).
+    
+    Strategy: Ultra-conservative filtering - Keep most memories for rich reasoning context
+    Expected result: 15-30 memories remaining
+    
+    ## Filtering Rules
+    1. KEEP memories about user behaviors, preferences, or decisions
+    2. KEEP higher-level memories (L2-L5) with broader context
+    3. KEEP memories revealing patterns or personality traits
+    4. KEEP memories providing background information
+    5. EXCLUDE only if completely unrelated to the question topic AND provides no context
+    
+    ## Special Instructions
+    - Complex questions need RICH context for reasoning
+    - Better to keep extra context than miss important patterns
+    - When uncertain about relevance → KEEP (do not exclude)
+    - Aim to exclude 5-15 memories maximum (keep most)
+    - Ensure coverage across different memory levels (L1-L5)
+    
+    Question: {question}
+    Candidate memories ({total_count} total):
+    {numbered_memories}
+    
+    Return IDs to keep (JSON format):
+    {{"relevant_ids": [1, 2, 3, ...]}}
+
+
+# Query Complexity Analysis
+query_complexity_analysis:
+  en: |
+    You are a professional query intent analysis expert. Please select the most appropriate retrieval method based on the question type, and extract keywords.
+    
+    **Critical Judgment Principles**:
+    - If the question requires understanding the user's **preferences, habits, values, personality traits, or historical behavior patterns** to answer correctly, classify as "Deep Retrieval" (2)
+    - If the question involves **reasoning, prediction, evaluation, subjective judgment, or hypothetical scenarios**, classify as "Deep Retrieval" (2)
+    - If the question requires integrating **behaviors across multiple time points, multiple choices, or long-term trends** to answer, classify as "Deep Retrieval" (2)
+    - Only **single factual queries** (who, when, where, what specific action) should be classified as "Simple Retrieval" (0)
+
+    **Retrieval Type Definitions**:
+
+    **0 - Simple Retrieval (Factual Questions)**: 
+    - Questions answerable by retrieving a single fact fragment
+    - Characteristics: Explicit time, location, person, event, or other objective fact queries
+    - Examples: "Where does X work?" "When did X go to location Y?" "Which meeting did X attend?"
+    - Key: Answer is an **explicitly recorded fact**, no reasoning or preference judgment needed
+
+    **1 - Hybrid Retrieval (Multi-Fact Integration Questions)**: 
+    - Questions requiring integration of multiple fact memories to answer
+    - Characteristics: Need to enumerate, summarize, or compare multiple facts, but no deep reasoning required
+    - Examples: "What activities did X participate in?" "What topics did X and Y discuss?" "Where has X been?"
+    - Key: Need to **aggregate multiple facts**, but still objective information integration
+
+    **2 - Deep Retrieval (Personalized Reasoning Questions)**: 
+    - Questions requiring reasoning based on user's deep personalized information (preferences, habits, values, personality) to answer
+    - **Core Characteristics**:
+      * Need to understand user's **stable preferences** (what they like/dislike, values, interests)
+      * Need to infer user's **future behavior** or **likely choices** ("Would like...?" "Suitable for...?" "Would choose...?")
+      * Need to evaluate or judge user's **personality traits, behavior patterns, cognitive style**
+      * Involves **subjective judgment, evaluation, recommendation, prediction, hypothetical questions**
+      * Need to infer user's attitude or tendency based on **historical behavior patterns**
+    - **Typical Question Patterns**:
+      * "Would X like...?" → Need to understand X's preference patterns
+      * "What kind of person is X?" → Need personality trait profile
+      * "Is X suitable for...?" → Need reasoning and matching
+      * "Why did X...?" → Need motivation reasoning
+      * "Does X think/feel...?" → Need attitude and values
+      * "Based on X's situation, recommend..." → Need personalized reasoning
+    - Examples: "Would X enjoy a beach vacation?" "Is X an extroverted person?" "Might X be interested in programming?" "Does X prioritize career or family more?"
+    - Key: Answer requires **synthesizing user's deep traits and preferences**, not directly recorded facts
+
+    **Judgment Process**:
+    1. First identify: Does the question require user's **preferences/habits/personality/values**? If yes → Deep Retrieval (2)
+    2. Second identify: Does the question require **reasoning/prediction/evaluation/subjective judgment**? If yes → Deep Retrieval (2)
+    3. Third identify: Does the question require **summarizing multiple fact fragments**? If yes → Hybrid Retrieval (1)
+    4. Finally: If only **single explicit fact** needed → Simple Retrieval (0)
+
+    Keyword extraction requirements:
+    1. Extract 1-3 most important keywords from the question
+    2. Exclude common stopwords (such as: the, a, in, is, have, and, or, with, etc.)
+    3. **STRICTLY FORBIDDEN**: Never include any personal names, usernames, or names
+    4. **FOCUS ONLY ON**: Action words, object names, location types, concept words, adjectives and other non-name key concepts
+
+    Question: {question}
+    
+    Please carefully analyze the essential needs of the question and output in the following JSON format:
+    {{
+      "complexity": 0/1/2,
+      "keywords": ["keyword1", "keyword2", "keyword3"]
+    }}
+

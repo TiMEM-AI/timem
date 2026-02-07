@@ -1,0 +1,44 @@
+---
+name: Feature Request
+about: Suggest an idea for this project
+title: '[FEATURE] '
+labels: enhancement
+assignees: ''
+
+---
+
+## Feature Description
+
+A clear and concise description of the feature you'd like to see added to TiMem.
+
+## Use Case
+
+Describe the use case or problem this feature would solve:
+
+**Current Problem**: What limitation are you facing?
+
+**Proposed Solution**: How would this feature solve it?
+
+## Proposed Implementation
+
+If you have ideas on how this could be implemented, please describe them here.
+
+## Alternatives
+
+Have you considered any alternative solutions or workarounds?
+
+## Additional Context
+
+Add any other context, screenshots, or examples about the feature request here.
+
+## Priority
+
+How important is this feature to you?
+
+- [ ] Critical
+- [ ] High
+- [ ] Medium
+- [ ] Low
+- [ ] Nice to have
+
+- [ ] I would be willing to contribute to this feature

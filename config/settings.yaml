@@ -1,0 +1,481 @@
+app:
+  debug: false
+  description: Time-aware Memory Management System
+  host: 0.0.0.0
+  language: en
+  name: TiMem
+  port: 8000
+  reload: false
+  reload_options:
+    delay: 0.25
+    dirs:
+    - app
+    - timem
+    excludes:
+    - logs/*
+    - backups/*
+    - data/*
+  version: 1.0.0
+  workers: 1
+llm:
+  default_provider: openai
+  dialogue_system:
+    max_retries: 2
+    max_tokens: 1024
+    model: glm-4-flash
+    provider: zhipuai
+    system_prompt_template: 'You are playing the role of {expert_name}, you are a
+      {expert_role}.
+
+
+      Your communication style: {expert_style}
+
+      Your professional approach: {expert_approach}
+
+
+      Important notes:
+
+      - When the user asks "Who am I", please answer based on the memory information
+      you have about the user
+
+      - You should help users understand their own information from an expert''s perspective
+
+      - If there is not enough user information, please be honest
+
+
+      Please provide a professional and helpful response based on the user''s question,
+      combined with the following memory context.
+
+      '
+    temperature: 0.8
+    timeout: 60
+  embedding:
+    batch_size: 32
+    cache_enabled: true
+    cache_size: 10000
+    device: cpu
+    fallback:
+      device: cpu
+      model: embedding-3
+      provider: zhipuai
+    max_length: 512
+    model: ${QWEN_EMBEDDING_PATH:./models/Qwen3-Embedding-0.6B}
+    normalize_embeddings: true
+    provider: qwen_local
+  max_retries: 3
+  providers:
+    claude:
+      api_key: ${CLAUDE_API_KEY:}
+      max_tokens: 2048
+      model: claude-3-sonnet-20240229
+      temperature: 0.7
+    cst:
+      api_key: ${CST_API_KEY:}
+      base_url: ${CST_BASE_URL:base_url}
+      default_chat_model: S1-Base-Lite
+      default_embedding_model: qwen3-embedding:8b
+      default_rerank_model: qwen3-reranker:8b
+      max_retries: 3
+      max_tokens: 2048
+      temperature: 0.7
+      timeout: 90
+    mock:
+      max_tokens: 2048
+      model: mock-llm
+      temperature: 0.7
+    openai:
+      api_key: ${OPENAI_API_KEY:}
+      base_url: ${OPENAI_BASE_URL:https://api.openai.com/v1}
+      concurrency:
+        api_key_rotation: true
+        async_retry_count: 20
+        async_retry_delay: 1.0
+        async_timeout: 30.0
+        batch_delay: 0.1
+        enable_async_timeout: true
+        enable_multi_api_keys: true
+        enable_rate_limit: false
+        max_concurrent_requests: 20
+        requests_per_minute: 20000
+      max_retries: 3
+      max_tokens: 2048
+      model: gpt-4o-mini
+      temperature: 0.7
+      test_api_key_1: ${OPENAI_API_KEY:}
+      timeout: 90
+    qwen:
+      api_key: ${QWEN_API_KEY:}
+      base_url: ${QWEN_BASE_URL:base_url}
+      max_retries: 3
+      max_tokens: 2048
+      model: qwen3-32b
+      temperature: 0.7
+      test_api_key_1: ${QWEN_API_KEY:}
+      test_api_key_number: 0
+      timeout: 90
+    qwen_local:
+      batch_size: 1
+      device: auto
+      enable_thinking: false
+      max_length: 2048
+      max_tokens: 512
+      model: Qwen3-8B
+      model_path: ${QWEN_MODEL_PATH:./models/Qwen3-8B}
+      quantization:
+        enabled: true
+        load_in_4bit: true
+        load_in_8bit: false
+        method: bitsandbytes
+      temperature: 0.7
+      torch_dtype: auto
+      use_flash_attention: true
+      use_kv_cache: true
+      use_torch_compile: true
+    zhipuai:
+      api_key: ${ZHIPUAI_API_KEY:}
+      max_retries: 3
+      max_tokens: 2048
+      model: glm-4-flash
+      temperature: 0.7
+      test_api_key_1: ${ZHIPUAI_API_KEY:}
+      test_api_key_number: 0
+      timeout: 90
+  resilience:
+    adaptive_timeout:
+      enabled: true
+      history_size: 100
+      max_timeout: 60.0
+      min_samples: 10
+      min_timeout: 10.0
+      percentile: 0.95
+      safety_margin: 1.5
+    circuit_breaker:
+      failure_rate_threshold: 0.5
+      failure_threshold: 5
+      half_open_max_calls: 1
+      min_calls_threshold: 10
+      recovery_timeout: 30.0
+    connection_pool:
+      connect_timeout: 3.0
+      keepalive_timeout: 30.0
+      max_connections: 100
+      max_connections_per_host: 20
+      read_timeout: 60.0
+      sock_connect: 2.0
+      sock_read: 30.0
+      total_timeout: 90.0
+    connection_warmer:
+      enabled: true
+      providers:
+      - zhipuai
+      - openai
+      warm_on_startup: true
+    dns_cache:
+      enabled: true
+      pre_resolve:
+      - open.bigmodel.cn
+      - api.openai.com
+      - turingai.plus
+      ttl: 300
+    fallback:
+      enabled: false
+      strict_mode: true
+    http2:
+      enabled: true
+      max_concurrent_streams: 100
+    rate_limiting:
+      openai:
+        adaptive: true
+        burst: 10
+        qps: 50.0
+      zhipuai:
+        adaptive: true
+        burst: 20
+        qps: 200.0
+    retry:
+      base_delay: 1.0
+      exponential_base: 2
+      guaranteed_response: true
+      jitter: true
+      max_attempts: 10
+      max_delay: 30.0
+      multi_key_fallback: true
+      strategy: guaranteed
+    streaming:
+      buffer_size: 1024
+      chunk_size: 128
+      connect_timeout: 3.0
+      enabled: true
+      max_buffer: 10
+      read_timeout: 5.0
+  retrieval_planner:
+    concurrency:
+      api_key_rotation: true
+      async_retry_count: 20
+      async_retry_delay: 1.0
+      async_timeout: 60.0
+      batch_delay: 0.1
+      enable_async_timeout: true
+      enable_multi_api_keys: true
+      enable_rate_limit: false
+      max_concurrent_requests: 20
+      requests_per_minute: 20000
+    max_retries: 3
+    max_tokens: 2048
+    model: gpt-4o-mini
+    provider: openai
+    temperature: 0.7
+    test_api_key_1: ${OPENAI_API_KEY:}
+    test_api_key_number: 0
+    timeout: 90
+  timeout: 90
+logging:
+  console_colorize: true
+  console_enabled: true
+  file_compression: zip
+  file_enabled: true
+  file_path: logs/timem.log
+  file_retention: 7 days
+  file_rotation: 10 MB
+  format: '{time:YYYY-MM-DD HH:mm:ss.SSS} | {level: <8} | {name}:{function}:{line}
+    - {message}'
+  level: ${LOG_LEVEL:INFO}
+memory:
+  historical_memory_limit: 3
+  importance_scoring:
+    cache_enabled: true
+    cache_ttl: 3600
+    default_score: 0.0
+    enabled: true
+memory_generation:
+  deduplication:
+    check_before_generate: true
+    check_in_generator: true
+    completeness_threshold: 0.95
+    strict_mode: true
+  layers:
+    l1:
+      fragment_size: 2
+      history_context_size: 3
+      importance_threshold: 0.5
+      lambda_weight: 0.7
+      max_fragments: 100
+      merge_weight: 0.7
+      summary_strategy: progressive
+      update_frequency: realtime
+    l2:
+      aggregation_threshold: 3
+      max_sessions: 50
+      topic_clustering: true
+      update_frequency: daily
+    l3:
+      max_daily_memories: 50
+      pattern_window: 1
+      trend_analysis: true
+      update_frequency: weekly
+    l4:
+      alpha_weight: 0.6
+      beta_weight: 0.4
+      expert_weights: dynamic
+      fusion_threshold: 0.5
+      max_expert_memories: 15
+      update_frequency: monthly
+    l5:
+      alpha_weight: 0.5
+      analysis_depth: 2
+      beta_weight: 0.5
+      max_user_memories: 30
+      update_frequency: weekly
+      user_weights: activity_based
+  manual_backfill:
+    async_threshold: 100
+    max_tasks_per_request: 1000
+    timeout_seconds: 600
+  scheduled_backfill:
+    batch_size: 10
+    enabled: true
+    layers:
+    - L2
+    - L3
+    - L4
+    - L5
+    lookback_days: 30
+    parallel_tasks: 3
+    schedule: 0 2 * * *
+  session_memory_scan:
+    batch_size: 20
+    enabled: true
+    exclude_recent_minutes: 1
+    interaction_timeout_minutes: 10
+    max_concurrent_tasks: 5
+    scan_interval_minutes: 10
+  session_state:
+    auto_trigger_l2: true
+    check_interval_seconds: 60
+    inactive_timeout_minutes: 10
+monitoring:
+  enabled: true
+  health_check:
+    enabled: true
+    interval: 30
+    path: /health
+  metrics:
+    path: /metrics
+    port: 9090
+  performance:
+    cpu_threshold: 80
+    enabled: true
+    memory_threshold: 80
+    slow_query_threshold: 1000
+rate_limiting:
+  burst_size: 20
+  default_rate: 100/minute
+  enabled: true
+  endpoints:
+    /api/v1/memories: 50/minute
+    /api/v1/memories/search: 100/minute
+    /api/v1/workflows: 20/minute
+realtime_dialogue:
+  batch_size: 10
+  behavior_change_threshold: 10
+  daily_session_threshold: 10
+  daily_update_hour: 0
+  enabled: true
+  high_level_update_interval: 7
+  l3_time_window: 24
+  l4_time_window: 168
+  l5_time_window: 720
+  max_concurrent_requests: 100
+  memory_trigger:
+    fragment_size: 2
+    merge_weight: 0.7
+  session_threshold: 50
+  session_timeout: 3600
+  timeout: 30
+  weekly_daily_threshold: 5
+  weekly_update_day: 6
+services:
+  access_token_expire_minutes: 30
+  api:
+    host: 0.0.0.0
+    port: 8000
+  cors:
+    allow_credentials: true
+    allow_headers:
+    - '*'
+    allow_methods:
+    - '*'
+    allow_origins:
+    - '*'
+  mcp:
+    host: 127.0.0.1
+    port: 8070
+  memory_service:
+    host: 127.0.0.1
+    port: 8081
+  secret_key: ${APP_SECRET_KEY:}
+session_context:
+  compressed_window_size: 10
+  context_cache_enabled: true
+  context_cache_ttl: 300
+  dedup_threshold: 0.85
+  enable_retrieval: true
+  include_metadata: false
+  max_retrieved_memories: 5
+  recent_window_size: 10
+storage:
+  cache:
+    db: 0
+    host: localhost
+    max_connections: 100
+    password: ''
+    port: 16379
+    provider: redis
+    retry_count: 3
+    timeout: 30
+  graph:
+    database: neo4j
+    password: ${NEO4J_PASSWORD:}
+    provider: neo4j
+    retry_count: 3
+    timeout: 30
+    uri: bolt://localhost:17687
+    user: neo4j
+  routing:
+    cache_ttl: 3600
+    default_strategy: hybrid
+    graph_threshold: 0.0
+    vector_threshold: 0.0
+  sql:
+    postgres:
+      application_name: TiMem
+      database: timem_db
+      host: localhost
+      max_overflow: 50
+      password: ${POSTGRES_PASSWORD:}
+      pool_pre_ping: true
+      pool_recycle: 1800
+      pool_reset_on_return: rollback
+      pool_size: 50
+      pool_timeout: 60
+      port: 15432
+      search_path: public
+      sslmode: prefer
+      user: ${POSTGRES_USER:}
+    provider: postgres
+  vector:
+    api_key: ''
+    collection_name: timem_memories
+    distance: Cosine
+    provider: qdrant
+    retry_count: 3
+    timeout: 30
+    url: http://localhost:16333
+    vector_size: 2048
+workflows:
+  layer_update:
+    cascade_enabled: true
+    enabled: true
+    triggers:
+      l1: realtime
+      l2: daily
+      l3: weekly
+      l4: monthly
+      l5: monthly
+  memory_generation:
+    enabled: true
+    layer_timeouts:
+      l1: 180
+      l2: 180
+      l3: 180
+      l4: 180
+      l5: 180
+    max_concurrent: 5
+    retry_config:
+      backoff_factor: 2.0
+      base_delay: 1.0
+      jitter: true
+      max_delay: 60.0
+    retry_count: 999999
+    timeout: 300
+  memory_retrieval:
+    enabled: true
+    max_concurrent: 10
+    strategies:
+      graph:
+        max_depth: 3
+        path_scoring: pagerank
+      hybrid:
+        graph_weight: 0.4
+        vector_weight: 0.6
+      vector:
+        similarity_threshold: 0.0
+        top_k: 10
+    timeout: 60
+  quality_assessment:
+    enabled: true
+    metrics:
+    - completeness
+    - consistency
+    - relevance
+    threshold: 0.8

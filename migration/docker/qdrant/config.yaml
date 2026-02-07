@@ -1,0 +1,73 @@
+# Qdrant Configuration File
+service:
+  http_port: 6333
+  grpc_port: 6334
+  enable_cors: true
+  enable_tls: false
+
+storage:
+  # Storage path
+  storage_path: /qdrant/storage
+  
+  # Performance optimization configuration
+  performance:
+    # Maximum concurrent write operations
+    max_concurrent_write_operations: 8
+    # Maximum concurrent read operations
+    max_concurrent_read_operations: 16
+    # Write buffer size (MB)
+    write_buffer_size: 64
+    # Read buffer size (MB)
+    read_buffer_size: 32
+
+  # Snapshot configuration
+  snapshots_path: /qdrant/snapshots
+  # Snapshot interval (seconds)
+  snapshot_interval: 3600
+
+# Logging configuration
+log_level: INFO
+
+# Cluster configuration (standalone mode)
+cluster:
+  enabled: false
+
+# Performance monitoring
+telemetry:
+  enabled: true
+  # Anonymous usage statistics
+  anonymous_telemetry: false
+
+# Security configuration
+security:
+  # API key authentication
+  api_key: null
+  # CORS configuration
+  cors:
+    allowed_origins: ["*"]
+    allowed_methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+    allowed_headers: ["*"]
+
+# Vector index configuration
+vector_index:
+  # HNSW index parameters
+  hnsw:
+    # Maximum connections per node
+    m: 32
+    # Search depth during construction
+    ef_construct: 200
+    # Search depth during query
+    ef: 100
+    # Full scan threshold
+    full_scan_threshold: 10000
+    # Maximum candidates
+    max_candidates: 1000
+
+# Optimization configuration
+optimizer:
+  # Optimization interval (seconds)
+  optimization_interval: 300
+  # Maximum optimization time (seconds)
+  max_optimization_time: 60
+  # Minimum vectors to trigger optimization
+  min_vectors_for_optimization: 1000

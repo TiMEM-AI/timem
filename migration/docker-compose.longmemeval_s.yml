@@ -1,0 +1,67 @@
+# TiMem Docker Compose Configuration - LongMemEval-S Independent Environment
+#
+# Purpose: Independent container environment for LongMemEval-S dataset
+# Start: docker-compose -f docker-compose.longmemeval_s.yml -p timem_longmemeval_s up -d
+# Stop: docker-compose -f docker-compose.longmemeval_s.yml -p timem_longmemeval_s down
+#
+# Port mapping (to avoid conflicts with default environment):
+#   PostgreSQL: 5433 (default: 15432)
+#   Qdrant:     6335 (default: 16333)
+#
+networks:
+  timem_longmemeval_s_network:
+    driver: bridge
+
+services:
+  postgres:
+    container_name: timem_longmemeval_s_postgres
+    environment:
+      POSTGRES_DB: timem_db
+      POSTGRES_USER: ${POSTGRES_USER:-timem_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C"
+    healthcheck:
+      interval: 30s
+      retries: 3
+      test:
+      - CMD-SHELL
+      - pg_isready -U timem_user -d timem_db
+      timeout: 10s
+    image: postgres:15-alpine
+    networks:
+    - timem_longmemeval_s_network
+    ports:
+    - 5433:5432
+    restart: unless-stopped
+    volumes:
+    - postgres_longmemeval_s_data:/var/lib/postgresql/data
+    - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    - ./docker/postgres/postgresql.conf:/etc/postgresql/postgresql.conf:ro
+
+  qdrant:
+    container_name: timem_longmemeval_s_qdrant
+    environment:
+    - QDRANT__SERVICE__HTTP_PORT=6333
+    - QDRANT__SERVICE__GRPC_PORT=6334
+    healthcheck:
+      interval: 30s
+      retries: 5
+      start_period: 40s
+      test:
+      - CMD-SHELL
+      - test -f /qdrant/.qdrant-initialized || exit 1
+      timeout: 10s
+    image: qdrant/qdrant:latest
+    networks:
+    - timem_longmemeval_s_network
+    ports:
+    - 6335:6333
+    - 6336:6334
+    restart: unless-stopped
+    volumes:
+    - qdrant_longmemeval_s_data:/qdrant/storage
+    - ./docker/qdrant/config.yaml:/qdrant/config/config.yaml:ro
+
+volumes:
+  postgres_longmemeval_s_data:
+  qdrant_longmemeval_s_data:

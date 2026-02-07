@@ -1,0 +1,94 @@
+
+# - config/datasets/{dataset_name}/prompts.yaml
+# - config/datasets/{dataset_name}/qa_prompts.yaml
+# - config/datasets/{dataset_name}/multi_stage_qa_prompts.yaml
+# - config/datasets/{dataset_name}/eval_prompt.yaml
+# - config/datasets/{dataset_name}/retrieval_config.yaml
+
+
+default:
+  storage:
+    vector:
+      collection_name: "timem_memories"
+      url: "http://localhost:16333"
+    sql:
+      postgres:
+        database: "timem_db"
+        host: "localhost"
+        port: 15432
+    graph:
+      database: "neo4j"
+      uri: "bolt://localhost:17687"
+    cache:
+      host: "localhost"
+      port: 16379
+  enabled: true
+  docker:
+    compose_file: "docker-compose.yml"
+    project_name: "timem"
+  metadata:
+    dataset_name: "locomo10"
+    config_location: "config/datasets/default/"
+    prompts_version: "locomo_v1"
+
+locomo:
+  storage:
+    vector:
+      collection_name: "timem_memories"
+      url: "http://localhost:16333"
+    sql:
+      postgres:
+        database: "timem_db"
+        host: "localhost"
+        port: 15432
+    graph:
+      database: "neo4j"
+      uri: "bolt://localhost:17687"
+    cache:
+      host: "localhost"
+      port: 16379
+  enabled: true
+  docker:
+    compose_file: "docker-compose.yml"
+    project_name: "timem"
+  metadata:
+    dataset_name: "locomo10_smart_split"
+    config_location: "config/datasets/locomo/"
+    prompts_version: "locomo_ablation_v1"
+
+
+longmemeval_s:
+  storage:
+    vector:
+      collection_name: "timem_memories"
+      url: "http://localhost:6335"
+    sql:
+      postgres:
+        database: "timem_db"
+        host: "localhost"
+        port: 5433
+    graph:
+      database: "neo4j"
+      uri: "bolt://localhost:7688"
+    cache:
+      host: "localhost"
+      port: 6380
+  enabled: true
+  docker:
+    compose_file: "docker-compose.longmemeval_s.yml"
+    project_name: "timem_longmemeval_s"
+  llm:
+    default_provider: "openai"
+  metadata:
+    dataset_name: "longmemeval_s"
+    dataset_path: "data/longmemeval_s"
+    config_location: "config/datasets/longmemeval_s/"
+    prompts_version: "longmemeval_v1"
+    created_at: "2025-10-22"
+    container_ports:
+      postgres: 5433
+      qdrant: 6335
+      neo4j_http: 7475
+      neo4j_bolt: 7688
+      redis: 6380
+

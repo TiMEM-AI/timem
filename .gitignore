@@ -1,0 +1,98 @@
+# 数据目录
+# NOTE: data/ 目录本身需要保留（包含 data/data_source.md 等说明文件），
+# 只忽略实际数据与生成产物，避免误提交大文件/数据集。
+data/locomo10.json
+data/longmemeval_s_cleaned.json
+data/*_split/
+data/*_smart_split/
+data/*metadata*.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# 环境变量和敏感配置
+.env
+.env.local
+.env.*.local
+.venv
+env/
+venv/
+ENV/
+*.local
+
+# IDE
+.vscode/
+.idea/
+.claude/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# 日志和数据库
+*.log
+*.sql
+*.sqlite
+*.db
+
+# 测试和覆盖率
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# 临时文件
+*.tmp
+*.bak
+*.cache
+.mypy_cache/
+.dmypy.json
+dmyp.json
+
+# 打包报告（可选）
+packing_report.json
+
+# 其他
+logs/
+*.pid
+*.seed
+
+# 敏感文件（确保不上传密钥和密码）
+.env
+.env.local
+*.key
+*.pem
+secrets/
+config_private/
+credentials/
+*.keystore
+*.jks
+
+# 本地模型文件（大文件，不应上传到仓库）
+models/
+D:/LLM/
+D:\LLM\
+*.bin
+*.safetensors

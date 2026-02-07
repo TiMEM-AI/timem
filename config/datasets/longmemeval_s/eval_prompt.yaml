@@ -1,0 +1,89 @@
+# ============================================================================
+# LongMemEval-S Dataset Evaluation Prompt Configuration
+# ============================================================================
+# This configuration file provides evaluation prompt templates for the LongMemEval-S dataset
+# Inherits from global config/eval_prompt.yaml configuration
+# ============================================================================
+
+# [CONFIG] LLM Evaluation Model Configuration
+# LLM model used for LongMemEval native evaluation
+eval_llm_config:
+  provider: "openai"  # LLM provider
+  model: "gpt-4o-mini"  # [UPDATED] Using gpt-4o-mini for evaluation (fast and efficient)
+  temperature: 0.0    # Evaluation temperature set to 0 to ensure stable results
+  max_tokens: 10      # Evaluation only needs simple yes/no response
+  
+# [COMPATIBILITY] Backward compatibility field
+eval_model: "gpt-4o-mini"  # For backward compatibility with legacy code
+
+# ============================================================================
+# [LongMemEval] Task-Specific Evaluation Prompts
+# ============================================================================
+# These prompts are used for different question types in LongMemEval-S
+
+# Single-session user information questions
+single_session_user_eval_prompt: |
+  You are evaluating whether an answer correctly answers a question about information from a conversation.
+  
+  Question: {question}
+  Gold Answer: {answer}
+  Generated Answer: {response}
+  
+  Determine if the generated answer correctly answers the question based on the gold answer.
+  Respond with only "yes" if correct, "no" if incorrect.
+
+# Single-session assistant information questions
+single_session_assistant_eval_prompt: |
+  You are evaluating whether an answer correctly answers a question about the assistant's information or actions.
+  
+  Question: {question}
+  Gold Answer: {answer}
+  Generated Answer: {response}
+  
+  Determine if the generated answer correctly answers the question based on the gold answer.
+  Respond with only "yes" if correct, "no" if incorrect.
+
+# Single-session preference questions
+single_session_preference_eval_prompt: |
+  You are evaluating whether an answer correctly identifies a user's preference or opinion from a conversation.
+  
+  Question: {question}
+  Gold Answer: {answer}
+  Generated Answer: {response}
+  
+  Determine if the generated answer correctly identifies the preference based on the gold answer.
+  Respond with only "yes" if correct, "no" if incorrect.
+
+# Multi-session questions requiring integration across sessions
+multi_session_eval_prompt: |
+  You are evaluating whether an answer correctly answers a question that requires integrating information across multiple conversation sessions.
+  
+  Question: {question}
+  Gold Answer: {answer}
+  Generated Answer: {response}
+  
+  Determine if the generated answer correctly answers the question by integrating information from multiple sessions.
+  Respond with only "yes" if correct, "no" if incorrect.
+
+# Knowledge update questions
+knowledge_update_eval_prompt: |
+  You are evaluating whether an answer correctly reflects knowledge updates or changes in user information over time.
+  
+  Question: {question}
+  Gold Answer: {answer}
+  Generated Answer: {response}
+  
+  Determine if the generated answer correctly identifies the knowledge update or change.
+  Respond with only "yes" if correct, "no" if incorrect.
+
+# Temporal reasoning questions
+temporal_reasoning_eval_prompt: |
+  You are evaluating whether an answer correctly answers a question requiring temporal reasoning about events and their timing.
+  
+  Question: {question}
+  Gold Answer: {answer}
+  Generated Answer: {response}
+  
+  For temporal reasoning questions, be lenient with date formats and relative time references.
+  If the answer refers to the same time period or date as the gold answer, consider it correct.
+  Respond with only "yes" if correct, "no" if incorrect.

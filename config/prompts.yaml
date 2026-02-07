@@ -1,0 +1,188 @@
+
+
+l1_fragment_summary:
+  en: |
+    You are a dialogue memory generator. Your task is to paraphrase and condense the key information from the **current conversation** into memory fragments, using third-person rephrasing. Ensure the paraphrasing is natural and fluent, with particular attention to all key details mentioned in the conversation.
+
+    Generation requirements:
+    1. **Historical memories** are provided for context only. Do not repeat any content from **historical memories**.
+    2. Identify and restate the core facts, events, people, times, and places from the **current conversation** using concise, information-rich language in the third person. Remove irrelevant or unimportant details.
+    3. When time expressions (e.g., "yesterday", "last week") appear, retain their original wording from the conversation.
+    4. Only include new information and events from the **current conversation**; do not duplicate content already present in **historical memories**.
+    5. Paraphrase the main points using third-person narration, ensuring all key details are preserved. Avoid vague statements.
+
+    Output format:
+    - Use concise, natural English sentences in the third person.
+    - Do not use any special symbols or formatting.
+    - Each sentence should clearly state who did what, when, and where, using the original time expressions from the conversation.
+    - Pay special attention to accurately capturing all key details mentioned in the conversation.
+
+    **Historical memories** (for context only; do not repeat their content):
+    {previous_summary}
+
+    **Current conversation** (to be summarized):
+    {new_dialogue}
+
+    Please paraphrase and condense the main content of the **current conversation** in natural, fluent English using third-person narration, focusing on all key details:
+
+
+l2_session_summary:
+  en: |
+    You need to integrate multiple fragment memories into a complete session summary.
+
+    Integration requirements:
+    1. Review the main content and development process of the entire session
+    2. Preserve key time information, important events and decisions
+    3. Highlight the behavior patterns and preference characteristics of both users
+    4. Use coherent narrative language, as if you are reviewing a complete conversation
+
+    Output requirements:
+    - Use natural and fluent English in paragraph form, within 150-200 words
+    - Organize the content in chronological order
+    - Use third-person narration to objectively record the session content
+    - Do not use any format markers or technical terms
+    - Focus on the core value and key information of this session
+
+    Fragment memory sequence:
+    {fragment_summaries}
+
+    Please integrate and generate the session-level memory:
+
+    Please generate session-level memory:
+
+l3_daily_summary:
+  en: |
+    Extract the core factual information about both users from today's conversations.
+
+    ## Core Tasks
+    Identify and record the most valuable factual information from today's conversations, focusing on the following dimensions:
+
+    ## Priority Information Types
+    - **Key Events and Behaviors**: Main events and the specific actions and reactions of both users
+    - **Attitudes and Preferences**: Users' viewpoints, attitudes, interests, habits or specific tendencies, as well as their unique ways of expression
+    - **Decision-Making Process**: Users' choices and the considerations and logic behind them
+    - **Emotional State Changes**: Significant emotional responses and their triggering situations
+
+    ## Extraction Principles
+    - Record in order of importance and chronology, maintaining factual objectivity
+    - Preserve both users' original expressions and key details
+    - Flexibly adjust the information structure to ensure no key elements are omitted
+    - If a certain type of information does not exist or is not important, it can be omitted
+
+    ## Output Guidance
+    Use concise natural language to record, and flexibly organize each dimension according to the actual situation:
+
+    - **Key Events**: Record main events, time, location, and users' behaviors, etc.
+    - **Attitudes and Preferences**: Record users' attitudes toward topics, interests, habits or tendencies, and unique ways of expression and cognition. If there are specific descriptions, record them in detail.
+    - **Decision-Making**: Record important decisions and their reasoning process; if there is a clear decision logic or causal chain, record in detail.
+    - **Emotional Reactions**: Record significant emotional changes and triggers; if emotional reactions are not obvious, this can be omitted.
+
+    ## Input Information
+    - **Historical Daily Reports** (avoid duplicate recording): {previous_daily_memories}
+    - **Today's Conversations**: {session_summaries}
+
+    ## Task Execution
+    Please extract today's core factual information:
+
+l4_weekly_summary:
+  en: |
+    Based on the factual content of this week's daily reports, construct the development trajectory of events and behavioral patterns.
+
+    ## Core Tasks
+    1. **Event Development Trajectory**: Connect the chronological sequence and logical relationships of key events this week
+    2. **Causal Analysis**: Identify triggering relationships and influence chains between events
+    3. **Personalized Information Extraction**: Extract specific information reflecting personal traits from facts
+
+    ## Key Points of Analysis
+    - **Event Trajectory Sorting**: Identify the development sequence and internal connections of key events this week
+    - **Causal Relationship Mining**: Analyze the influence relationships among events, behaviors, and decisions
+    - **Personal Trait Identification**: Extract the unique characteristics of both users from facts
+    - **Pattern and Regularity Summary**: Identify users' consistent behavioral characteristics and response patterns
+
+    ## Analysis Guidance
+    According to the actual situation this week, focus on analyzing the most significant features, which may include but are not limited to:
+    - Manifestation and changes of interests and hobbies
+    - Value orientation in specific situations
+    - Decision-making style and thinking characteristics
+    - Emotional expression and regulation methods
+    - Social interaction preference patterns
+
+    ## Output Requirements
+    - Appropriately control the length, organize information with high density, and avoid empty descriptions and redundant statements
+    - Analyze and summarize strictly based on factual daily reports, do not deliberately cite sources
+    - Highlight key personalized characteristic information
+
+    ## Input Information
+    - **Historical Weekly Reports**: {previous_weekly_memories}
+    - **This Week's Daily Reports**: {daily_summaries}
+
+    ## Task Execution
+    Please analyze this week's event trajectories and the personalized characteristics of both users:
+
+l5_high_level_summary:
+  en: |
+    Based on this month's weekly reports and historical profiles, construct precise and personalized deep profiles for each participant.
+
+    ## Profile Construction Principles
+    1. **Evidence Anchoring**: Each trait description must correspond to specific behavioral events.
+    2. **Personalization Focus**: Avoid using generic vocabulary, and describe the specific and unique characteristics of both users.
+    3. **Iterative Updates**: Make precise updates based on historical profiles.
+    4. **Separate Analysis**: Analyze the two users separately, do not mix up their characteristics.
+
+    ## Profile Construction Focus
+
+    ### Core Feature Identification
+    Based on the content of the weekly reports, identify the most prominent personality traits of both users, focusing on:
+    - Ways of thinking and decision-making
+    - Emotional expression and interaction characteristics
+    - Interests and value pursuits
+    - Coping styles when facing challenges and changes
+
+    ### Deep Trait Analysis
+    Extract deep traits from specific behaviors, avoiding superficial descriptions. Focus on:
+    - Cognitive preferences: perspectives and ways of thinking
+    - Behavioral patterns: consistent performance in different situations
+    - Value orientation: values behind choices and judgments
+    - Growth trajectory: characteristics of ability development and adaptation to changes
+
+    ### Personalized Expression
+    Use specific and vivid language to describe each user's uniqueness, ensuring:
+    - Do not omit key information such as specific events and user preferences
+    - Avoid using generic adjectives
+    - Highlight unique aspects that distinguish them from others
+    - Reflect the user's true personality and charm
+
+    ## Construction Requirements
+    - Base on specific events, avoid abstract generalizations
+    - Highlight uniqueness, avoid generic descriptions
+    - Use natural narrative, integrate evidence into the expression
+    - Control the length appropriately, avoid redundant descriptions
+
+    ## Input Information
+    - **Historical Profiles** (if available, use as reference): {previous_monthly_memories}
+    - **This Month's Weekly Reports**: {expert_memories}
+
+    ## Task Execution
+    Please construct personalized deep profiles for both users:
+
+query_complexity_analysis:
+  en: |
+    Please select the most appropriate retrieval method based on the question type, and extract keywords:
+
+    **0 - Simple Retrieval**: For questions that can be answered by retrieving a single fact fragment only (basic information such as people, time, location, etc.)
+    **1 - Hybrid Retrieval**: For questions where a single fragment may not be enough, and you need to integrate multiple fact memories to answer (such as participated activities, actions taken, things liked, etc.)
+    **2 - Deep Retrieval**: For questions that require integrating deep personalized information and performing complex reasoning to answer (such as personality traits, preference tendencies, cognitive patterns, and other deep personalized questions)
+
+    Keyword extraction requirements:
+    1. Extract 1-3 most important keywords from the question
+    2. Exclude common stopwords (such as: the, a, in, is, have, and, or, with, etc.)
+    3. Exclude personal names and usernames
+
+    Question: {question}
+    
+    Please output in the following JSON format:
+    {{
+      "complexity": 0/1/2,
+      "keywords": ["keyword1", "keyword2", "keyword3"]
+    }}
+

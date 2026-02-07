@@ -1,0 +1,69 @@
+# ============================================================================
+# Locomo Dataset Configuration
+# ============================================================================
+# This configuration file provides QA prompt templates optimized for the Locomo experimental dataset
+# Non-COT evaluation mode
+# ============================================================================
+
+# TiMem QA Prompt Management
+# ---------------------------------
+# This file manages prompt templates used in the question-answering system, supporting memory retrieval
+# answers with temporal information. Supports both Chinese (zh) and English (en) languages.
+#
+# Usage:
+# - Load and use in timem/workflows/retrieval_nodes/answer_generator.py
+# - Retrieve prompt templates using the get_qa_prompt() method.
+# ---------------------------------
+
+# LLM Model Configuration
+# LLM model configuration used for answer generation
+qa_llm_config:
+  provider: "openai"  # LLM provider
+  model: "gpt-4o-mini"  # Using gpt-4o-mini for answer generation
+  temperature: 0.7    # Generation temperature
+  max_tokens: 2048    # Maximum token count (2048 is sufficient for Non-COT mode)
+  top_p: 1.0         # Nucleus sampling
+  
+# COT Configuration
+# Locomo uses Non-COT evaluation
+ENABLE_COT: false  # Non-COT mode
+
+# [LOCOMO] Non-COT Answer Generation Prompt
+ANSWER_PROMPT_MEM_0:
+  en: |
+    You are an intelligent memory assistant tasked with retrieving accurate information from conversation memories.
+
+    # CONTEXT:
+    You have access to memories from two speakers in a conversation. These memories contain
+    timestamped information that may be relevant to answering the question.
+
+    # INSTRUCTIONS:
+    1. Carefully analyze all provided memories from both speakers
+    2. Pay special attention to the timestamps to determine the answer
+    3. If the question asks about a specific event or fact, look for direct evidence in the memories
+    4. If the memories contain contradictory information, prioritize the most recent memory
+    5. If there is a question about time references (like "last year", "two months ago", etc.),
+       calculate the actual date based on the memory timestamp. For example, if a memory from
+       4 May 2022 mentions "went to India last year," then the trip occurred in 2021.
+    6. Always convert relative time references to specific dates, months, or years. For example,
+       convert "last year" to "2022" or "two months ago" to "March 2023" based on the memory
+       timestamp. Ignore the reference while answering the question.
+    7. Focus only on the content of the memories from both speakers. Do not confuse character
+       names mentioned in memories with the actual users who created those memories.
+    8. The answer should be less than 5-6 words.
+
+    # APPROACH (Think step by step):
+    1. First, examine all memories that contain information related to the question
+    2. Examine the timestamps and content of these memories carefully
+    3. Look for explicit mentions of dates, times, locations, or events that answer the question
+    4. If the answer requires calculation (e.g., converting relative time references), show your work
+    5. Formulate a precise, concise answer based solely on the evidence in the memories
+    6. Double-check that your answer directly addresses the question asked
+    7. Ensure your final answer is specific and avoids vague time references
+
+    Relevant Memories:
+    {context_memories}
+
+    Question: {question}
+
+    Answer:

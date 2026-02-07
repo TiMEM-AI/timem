@@ -1,0 +1,56 @@
+
+retrieval:
+  use_v2_retrievers: true
+  
+  max_execution_time: 180  
+  
+  semantic:
+    weight: 0.9  
+    score_threshold: 0.0  
+    
+  keyword:
+    weight: 0.1  
+    bm25_k1: 1.5  # BM25translated_textk1
+    bm25_b: 0.75  # BM25translated_textb
+    
+retrieval_strategies:
+  simple:
+    description: "translated_text：L1(top40translated_text+top10translated_text) + L2(top1)"
+    layers: ["L1", "L2"]
+    layer_limits:
+      L1: 40  
+      L2: 2 
+    final_limits: 
+      L1: 20 
+      L2: 4
+    use_cases: ["translated_text", "translated_text"]
+  
+  hybrid:
+    description: "translated_text：L1(top40translated_text+top10translated_text) + L2(top1) + L3(top1) + L4(top1)"
+    layers: ["L1", "L2", "L3", "L4"]
+    layer_limits:
+      L1: 40  
+      L2: 10   
+      L3: 10 
+      L4: 10 
+    final_limits: 
+      L1: 20 
+      L2: 4
+      L3: 2
+      L4: 1
+    use_cases: ["translated_text", "translated_text", "translated_text"]
+  
+  complex:
+    description: "translated_text：L1(top40translated_text+top10translated_text) + L3(top2) + L4(top1) + L5(top1)"
+    layers: ["L1", "L3", "L4", "L5"]
+    layer_limits:
+      L1: 40 
+      L3: 10   
+      L4: 10  
+      L4: 10   
+      L5: 10  
+      L1: 20
+      L3: 4
+      L4: 2
+      L5: 1
+    final_limits: 

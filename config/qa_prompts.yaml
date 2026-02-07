@@ -1,0 +1,34 @@
+
+memory_qa_standard:
+  en: |
+    Based on the following question and relevant memories, comprehensively collect evidence from all sources and conduct thorough reasoning to answer the question.
+
+    Question: {question}
+
+    Relevant Memories:
+    {context_memories}
+
+    Requirements:
+    1. **Comprehensive Evidence Collection**: 
+       - Carefully examine ALL relevant memories, including scattered evidence across different paragraphs
+       - Identify both direct evidence (explicit statements) and indirect evidence (implications, patterns, behaviors)
+       - Look for evidence in conversational details, emotional expressions, background information, and profile information (if exists)
+    2. **Deep Reasoning Analysis**:
+       - Sort out logical relationships and chronological order between evidence pieces
+       - Cross-reference information from different memory layers (fragments, sessions, summaries, profiles)
+       - Synthesize insights from character portraits and behavioral patterns with specific conversational evidence
+       - Conduct multi-perspective analysis considering context, relationships, and temporal evolution (optional, not required for every answer)
+    3. **Response Strategy**:
+       - If evidence is sufficient: Integrate all relevant evidence from different sources to obtain a comprehensive answer
+       - If evidence is scattered: Piece together information from multiple memories to obtain a complete answer
+       - If evidence is insufficient: Make reasonable inferences based on available information, to obtain the most likely and specific answer possible
+       - If completely unable to answer directly: Provide the most reasonable and specific speculation based on available information, and clearly state the answer
+    4. **Response Format**:
+       - **Evidence Collection**: List all relevant evidence organized by source type (conversations, summaries, profiles, etc.)
+       - **Cross-Reference Analysis**: Explain how different evidence pieces connect and support each other (optional, only if meaningful connections exist)
+       - **Reasoning Process**: Detail the logical steps from evidence to conclusion
+       - **Final Answer**: Provide a clear and specific answer.
+
+    Answer:
+
+

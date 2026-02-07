@@ -1,0 +1,116 @@
+answer_generation:
+  mode: single
+  multi_stage_cot:
+    enable_stage_caching: false
+    enabled: false
+    fallback_to_single_stage: true
+    max_retry_on_parse_error: 3
+    stage1_llm_model: gpt-4o-mini
+    stage2_llm_model: gpt-4o-mini
+    stage3_llm_model: gpt-4o-mini
+    timeout_per_stage: 60
+  single_cot:
+    enabled: true
+    llm_model: gpt-4o-mini
+    max_retries: 3
+    max_tokens: 2048
+    retry_prompt_enhancement: true
+    strict_format: true
+    temperature: 0.7
+memory_refiner:
+  empty_result_protection:
+    enabled: true
+    fallback_count: 5
+    min_original_count: 3
+  enabled: true
+  llm_model: gpt-4o-mini
+  llm_provider: openai
+  max_tokens: 1024
+  prompt_config:
+    include_reasoning: true
+    show_memory_metadata: true
+  prompt_templates:
+    complexity_0: relevance_analysis_simple
+    complexity_1: relevance_analysis_hybrid
+    complexity_2: relevance_analysis_complex
+  retry:
+    fallback_on_error: true
+    max_retries: 3
+    retry_on_empty: true
+    retry_on_parse_error: true
+  strategy_aware: true
+  temperature: 0.3
+  timeout: 30
+retrieval:
+  keyword:
+    bm25_b: 0.75
+    bm25_k1: 1.5
+    weight: 0.1
+  max_execution_time: 180
+  semantic:
+    score_threshold: 0.0
+    weight: 0.9
+  use_v2_retrievers: true
+retrieval_strategies:
+  complex:
+    description: Complex retrieval - L1(top80 coarse + top40 fine) + L3(top8) + L4(top5) + L5(top3)
+    final_limits:
+      L1: 20
+      L2: 4
+      L3: 4
+      L4: 2
+      L5: 1
+    layer_limits:
+      L1: 40
+      L2: 10
+      L3: 5
+      L4: 5
+      L5: 5
+    layers:
+    - L1
+    - L2
+    - L3
+    - L4
+    - L5
+    use_cases:
+    - Deep analysis
+    - Complex reasoning
+    - Advanced pattern matching
+  hybrid:
+    description: Hybrid retrieval - L1(top80 coarse + top40 fine) + L2(top10) + L3(top5) + L4(top3) + L5(top1)
+    final_limits:
+      L1: 20
+      L2: 4
+      L3: 2
+      L5: 1
+    layer_limits:
+      L1: 40
+      L2: 10
+      L3: 5
+      L5: 5
+    layers:
+    - L1
+    - L2
+    - L3
+    - L5
+    use_cases:
+    - Association analysis
+    - Pattern recognition
+    - Medium complexity queries
+  simple:
+    description: Simple retrieval - L1(top80 coarse + top40 fine) + L2(top10) + L5(top3)
+    final_limits:
+      L1: 20
+      L2: 4
+      L5: 1
+    layer_limits:
+      L1: 40
+      L2: 10
+      L5: 5
+    layers:
+    - L1
+    - L2
+    - L5
+    use_cases:
+    - Fact queries
+    - Direct information retrieval

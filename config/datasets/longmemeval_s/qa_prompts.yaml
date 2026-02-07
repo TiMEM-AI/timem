@@ -1,0 +1,33 @@
+# ============================================================================
+# LongMemEval-S Dataset QA Prompt Configuration
+# ============================================================================
+# This configuration file provides QA prompt templates for the LongMemEval-S dataset
+# Inherits from global config/qa_prompts.yaml configuration
+# Adapted for TiMem memory system (using Related Memories instead of History Chats)
+# ============================================================================
+
+# [CONFIG] LLM Model Configuration
+# LLM model configuration used for answer generation
+qa_llm_config:
+  provider: "openai"  # LLM provider
+  model: "gpt-4o"  # [UPDATED] Using gpt-4o for answer generation (fast and efficient)
+  temperature: 0.7    # Generation temperature
+  max_tokens: 8192    # Maximum token count (increased from 512 to support complete COT reasoning)
+  top_p: 1.0         # Nucleus sampling
+  
+# [CONFIG] COT Configuration
+# Enabling COT improves answer quality, especially for complex reasoning questions
+ENABLE_COT: false  # Recommended: Enable Chain-of-Thought reasoning
+
+# [LongMemEval] Style Answer Generation Prompt (without CoT)
+ANSWER_PROMPT_LONGMEMEVAL_NO_COT:
+  en: |
+    I will give you several related memories between you and a user. Please answer the question based on the relevant memories.
+    
+    Related Memories:
+    
+    {}
+    
+    Current Date: {}
+    Question: {}
+    Answer:
