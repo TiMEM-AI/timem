@@ -318,6 +318,10 @@ Server Side Public License (SSPL) v1 — see the [LICENSE](LICENSE) file for det
 
 **Note:** This license requires that if you make the functionality of TiMem available to others as a network service, you must make your modifications (including all supporting software) available under the same license. This ensures cloud providers who use TiMem commercially contribute their improvements back to the community.
 
+## ⭐ Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=TiMEM-AI/timem&type=Date)](https://star-history.com/#TiMEM-AI/timem&Date)
+
 ---
 
 <p align="center">
