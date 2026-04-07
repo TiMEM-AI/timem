@@ -328,6 +328,11 @@ Server Side Public License (SSPL) v1 — 详见 [LICENSE](LICENSE) 文件。
 
 **注意：** 本协议要求，如果您将 TiMem 的功能作为网络服务提供给他人使用，您必须以相同的协议开源您的修改（包括所有支持软件）。这确保了使用 TiMem 进行商业运营的云服务提供商将其改进回馈给社区。
 
+
+## ⭐ Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=TiMEM-AI/timem&type=Date)](https://star-history.com/#TiMEM-AI/timem&Date)
+
 ---
 
 <p align="center">
