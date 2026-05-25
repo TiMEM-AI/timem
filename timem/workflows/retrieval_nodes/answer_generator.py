@@ -102,7 +102,7 @@ class AnswerGenerator:
                 self.logger.info(f"✨ Directly return {len(retrieval_state.ranked_results)} retrieved memories without LLM call")
                 
                 # ✨ Send thinking event: skip LLM generation
-                from app.schemas.dialogue import SSEThinkingEvent, ThinkingStep, ThinkingStepType, RetrievedMemoryDetail
+                from timem.schemas.dialogue import SSEThinkingEvent, ThinkingStep, ThinkingStepType, RetrievedMemoryDetail
                 from datetime import datetime
                 
                 # Build retrieved memory details

@@ -45,9 +45,12 @@
   <a href="https://github.com/TiMEM-AI/timem-ai/stargazers">
     <img src="https://img.shields.io/github/stars/TiMEM-AI/timem" alt="Stars">
   </a>
+  <a href="https://aclanthology.org/">
+    <img src="https://img.shields.io/badge/ACL%202026-Findings-orange" alt="ACL 2026 Findings">
+  </a>
 </p>
 
-> **🎉 TiMem v1.0 is now available!** This release includes cloud service support, simplified SDK usage, and research-backed memory consolidation.
+> **🎉 TiMem v1.1.0 - ACL 2026 Findings!** This release includes bug fixes for open-source repository, complete memory model definitions, and research-backed memory consolidation. **Paper accepted to ACL 2026 Findings.**
 
 ## 🔥 TiMem Highlights
 
@@ -246,6 +249,8 @@ See full guide: [cloud-service/README.md](cloud-service/README.md)
 
 ### Paper
 
+**🎉 Accepted to ACL 2026 Findings!**
+
 **TiMem: Temporal-Hierarchical Memory Consolidation for Long-Horizon Conversational Agents**
 
 Long-horizon conversational agents have to manage ever-growing interaction histories that quickly exceed the finite context windows of large language models (LLMs). Existing memory frameworks provide limited support for temporally structured information across hierarchical levels, often leading to fragmented memories and unstable long-horizon personalization.
@@ -274,9 +279,10 @@ We present TiMem, a temporal–hierarchical memory framework that organizes conv
 
 Continuously maintained and upgraded:
 
-- **2026.02.08** - Open source repository officially launched
+- **2026.05.25** - **v1.1.0**: Bug fixes for open-source repository, restored missing `timem/models/` and `timem/schemas/`, paper accepted to ACL 2026 Findings
+- **2026.02.08** - **v1.0.0**: Open source repository officially launched
 - **2026.02.01** - Cloud service beta preview released
-- **2026.01.06** - TiMem research paper published
+- **2026.01.06** - TiMem research paper published on arXiv
 
 ---
 

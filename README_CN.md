@@ -43,9 +43,12 @@
   <a href="https://github.com/TiMEM-AI/timem-ai/stargazers">
     <img src="https://img.shields.io/github/stars/TiMEM-AI/timem" alt="星标数">
   </a>
+  <a href="https://aclanthology.org/">
+    <img src="https://img.shields.io/badge/ACL%202026-Findings-orange" alt="ACL 2026 Findings">
+  </a>
 </p>
 
-> **🎉 TiMem v1.0 已发布！** 本次发布包括云服务支持、简化的 SDK 用法以及基于研究的记忆巩固。
+> **🎉 TiMem v1.1.0 - ACL 2026 Findings！** 本次发布包括开源仓库 bug 修复、完整的记忆模型定义，以及基于研究的记忆巩固。**论文已被 ACL 2026 Findings 接收。**
 
 ## 🔥 TiMem 亮点
 
@@ -243,7 +246,9 @@ TiMem 云服务是托管版本，无需部署即可使用。
 
 ### 论文
 
-**TiMem：面向长程对话智能体的时序分层记忆巩固框架**
+**🎉 已被 ACL 2026 Findings 接收！**
+
+**TiMem: Temporal-Hierarchical Memory Consolidation for Long-Horizon Conversational Agents**
 
 长程对话智能体需要管理不断增长的交互历史，这些历史很快就会超过大语言模型（LLM）的有限上下文窗口。现有的记忆框架对跨层次的时序结构化信息支持有限，往往导致记忆碎片化和不稳定的长程个性化。
 
@@ -271,9 +276,10 @@ TiMem 云服务是托管版本，无需部署即可使用。
 
 持续维护升级记录：
 
-- **2026.02.08** - 开源仓库正式上线
+- **2026.05.25** - **v1.1.0**: 开源仓库 bug 修复，恢复缺失的 `timem/models/` 和 `timem/schemas/`，论文被 ACL 2026 Findings 接收
+- **2026.02.08** - **v1.0.0**: 开源仓库正式上线
 - **2026.02.01** - 云服务上线内测预览版
-- **2026.01.06** - TiMem 研究论文发布
+- **2026.01.06** - TiMem 研究论文发布于 arXiv
 
 ---
 

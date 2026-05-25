@@ -90,8 +90,9 @@ credentials/
 *.keystore
 *.jks
 
-# 本地模型文件（大文件，不应上传到仓库）
-models/
+# Local model files (large files, should not be uploaded to repository)
+# Note: Use exact path matching to avoid ignoring timem/models/ Python package
+/models/
 D:/LLM/
 D:\LLM\
 *.bin
