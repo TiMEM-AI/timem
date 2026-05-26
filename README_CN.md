@@ -77,6 +77,8 @@
 
 ## 🚀 快速开始
 
+### 本地部署安装
+
 选择使用托管云服务或本地部署：
 
 ### 云服务（推荐）
@@ -129,22 +131,43 @@ asyncio.run(main())
 
 ### 本地部署（开源）
 
-需要数据库设置，但提供完全控制：
+需要数据库设置，但提供完全控制。
+
+**一行命令 CLI 安装（推荐）：**
 
 ```bash
-# 克隆仓库
+# 克隆并安装
 git clone https://github.com/TiMEM-AI/timem-ai.git
-cd timem
+cd timem-ai
+pip install -e .
 
-# 创建虚拟环境
+# 交互式安装向导（自动完成所有步骤）
+timem setup wizard
+```
+
+**快速一行命令安装（带 API key）：**
+
+```bash
+timem setup quick --provider openai --api-key sk-your-key
+```
+
+**手动安装（如需自定义）：**
+
+```bash
 python -m venv .venv
 .venv\Scripts\activate  # Windows
-
-# 安装依赖
 pip install -r requirements.txt
-
-# 启动数据库
 cd migration && docker-compose up -d
+```
+
+**CLI 常用命令：**
+
+```bash
+timem start       # 启动数据库容器
+timem stop        # 停止数据库容器
+timem status      # 查看服务状态
+timem doctor      # 运行环境诊断
+timem config init # 交互式配置 .env
 ```
 
 ## 📖 示例代码
@@ -288,6 +311,7 @@ TiMem 云服务是托管版本，无需部署即可使用。
 ### 📖 文档
 - **[完整文档](docs/zh/README.md)** - 完整文档中心
 - **[开发者指南](docs/zh/developer-guide/README.md)** - 30分钟开发者快速入门
+- **[本地部署指南](skill/install.md)** - 本地部署安装步骤
 
 ### 🔧 API 与 SDK
 - **[API 参考](docs/zh/api-reference/overview.md)** - REST API 文档

@@ -79,6 +79,8 @@
 
 ## 🚀 Quick Start
 
+### Self-Hosted Installation
+
 Choose between our hosted cloud service or self-hosted deployment:
 
 ### Cloud Service (Recommended)
@@ -132,23 +134,44 @@ asyncio.run(main())
 
 ### Self-Hosted (Open Source)
 
-Requires database setup but offers full control:
+Requires database setup but offers full control.
+
+**One-line CLI install (Recommended):**
 
 ```bash
-# Clone repository
+# Clone and install
 git clone https://github.com/TiMEM-AI/timem-ai.git
-cd timem
+cd timem-ai
+pip install -e .
 
-# Create virtual environment
+# Interactive setup wizard (handles everything)
+timem setup wizard
+```
+
+**Quick one-line setup with API key:**
+
+```bash
+timem setup quick --provider openai --api-key sk-your-key
+```
+
+**Manual setup (if you prefer):**
+
+```bash
 python -m venv .venv
 source .venv/bin/activate  # Linux/Mac
 # .venv\Scripts\activate   # Windows
-
-# Install dependencies
 pip install -r requirements.txt
-
-# Start databases
 cd migration && docker-compose up -d
+```
+
+**CLI Commands:**
+
+```bash
+timem start       # Start database containers
+timem stop        # Stop database containers
+timem status      # Check service status
+timem doctor      # Run environment diagnostics
+timem config init # Configure .env interactively
 ```
 
 ## 📖 Examples
@@ -291,6 +314,7 @@ Continuously maintained and upgraded:
 ### 📖 Documentation
 - **[Full Documentation](docs/en/README.md)** - Complete docs hub
 - **[Developer Guide](docs/en/developer-guide/README.md)** - 30-min developer quickstart
+- **[Local Deployment Guide](skill/install.md)** - Self-hosted installation steps
 
 ### 🔧 API & SDK
 - **[API Reference](docs/en/api-reference/overview.md)** - REST API docs
