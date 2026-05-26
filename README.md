@@ -311,6 +311,33 @@ Continuously maintained and upgraded:
 - **2026.02.01** - Cloud service beta preview released
 - **2026.01.06** - TiMem research paper published on arXiv
 
+## 🗺️ Roadmap
+
+Building towards the next generation of agent cognition infrastructure.
+
+### 🧠 Memory Architecture Evolution
+
+| Feature | Description | Impact |
+|:--------|:------------|:-------|
+| **L1→L2 Skip-Layer Persona Link** | When L1 fragments consolidate into L2 session summaries, jump-layer connections route low-frequency but high-signal features directly into the user persona module for structured, persistent storage. | Long-term user understanding that never degrades — critical traits (dietary restrictions, professional expertise, emotional patterns) survive beyond session boundaries without noise. |
+| **Relation Summary Module** | Dedicated relation insight layer that extracts and maintains inferred relationship graphs between users, entities, and concepts across sessions. | Agents develop genuine "social intelligence" — understanding not just what users say, but how they relate to people, organizations, and topics in their world. |
+| **Enhanced L3 Event Graph** | Upgrade L3 daily memory with native event-graph topology — temporal nodes linked by causal, sequential, and thematic edges rather than flat summaries. | Multi-hop temporal reasoning: "Because you rescheduled the meeting on Tuesday, your Wednesday workload increased, which explains today's stress." |
+| **Multi-Hop Reasoning** | Extend the retrieval pipeline with explicit graph traversal across memory layers, supporting chained inference over distant but causally connected memories. | Complex questions requiring synthesis across weeks or months of interaction history answered with structured reasoning traces, not just similarity matching. |
+| **Memory Tagging & Thematic Indexing** | Add a `tags` field to all memory records with automatic content-theme identification, creating a secondary thematic index alongside the temporal hierarchy. | 3-5x faster retrieval for broad thematic queries ("everything about my fitness goals") without sacrificing precision on specific factual lookups. |
+
+### ⚡ Inference & Control Efficiency
+
+| Feature | Description | Impact |
+|:--------|:------------|:-------|
+| **Small-Model Plan & Gating** | Replace LLM-based planning and gating decisions with fine-tuned small models (sub-7B parameters) specialized for TiMem's decision boundaries. | 10-50x latency reduction on plan generation and routing decisions, enabling real-time agent responsiveness while preserving decision quality. |
+
+### 🤝 Multi-Agent & Operations
+
+| Feature | Description | Impact |
+|:--------|:------------|:-------|
+| **Multi-Agent Collaboration** | Native support for shared memory spaces, role-aware delegation, and conflict-resolution protocols across collaborating agents. | Teams of specialized agents (researcher, planner, executor) share a unified cognitive substrate — no information loss during handoffs. |
+| **Local-First Dashboard** | Privacy-centric web dashboard for memory inspection, debugging, and governance — runs entirely on localhost with zero cloud dependency. | Full data sovereignty. Users and operators can browse, audit, and curate what their agents remember without exposing sensitive history to external services. |
+
 ---
 
 ## 📚 Documentation & Support
@@ -353,8 +380,10 @@ If you use TiMem in your research, please cite:
 
 TiMem uses a dual-license model to balance openness and adoption:
 
-- **Core Engine** (`timem/`, `storage/`, `services/`, `llm/`, `migration/`): [Apache License 2.0](LICENSE) — patent-protected, suitable for production infrastructure
-- **Tools & Utilities** (`tools/`, `cloud-service/`, `docs/`): [MIT License](tools/LICENSE) — maximally permissive, encourages community tooling and commercial integration
+- **Core Engine** — `timem/`, `storage/`, `services/`, `llm/`, `migration/`  
+  [Apache License 2.0](LICENSE): patent-protected, suitable for production infrastructure
+- **Tools & Utilities** — `tools/`, `cloud-service/`, `docs/`  
+  [MIT License](tools/LICENSE): maximally permissive, encourages community tooling and commercial integration
 
 See the respective LICENSE files for full terms. We welcome all contributions — PRs and issues make TiMem better for everyone.
 
